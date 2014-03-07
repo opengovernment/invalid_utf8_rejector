@@ -10,7 +10,15 @@ module InvalidUTF8Rejector
       if request_uri_clean?(env)
         @app.call(env)
       else
-        [400, {}, [""]]
+        if clean_utf8?(env["PATH_INFO"])
+          env["QUERY_STRING"] = nil
+          @app.call(env)
+        else
+          # [400, {}, [""]]
+          env["PATH_INFO"] = "/"
+          env["QUERY_STRING"] = nli
+          @app.call(env)
+        end
       end
     end
 
