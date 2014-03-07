@@ -16,7 +16,7 @@ module InvalidUTF8Rejector
         else
           # [400, {}, [""]]
           env["PATH_INFO"] = "/"
-          env["QUERY_STRING"] = nli
+          env["QUERY_STRING"] = nil
           @app.call(env)
         end
       end
